@@ -1,20 +1,19 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors"
-// const twilio = require('twilio');
+
 import twilio from 'twilio';
 const port = 8000
-const app = express() //fetch express functionality
+const app = express() 
 app.use(cors())
 app.use(express.json())
-// const accountSid = 'ACbb41a86dcd4169e9706d5f023f247abe';
-// const authToken = '6be15d83a0602a7f8959fe4f2bb7b326';
-const accountSid='AC44b31f98118e060842ed8263af973348'
-const authToken='b1b2f532ec8b362ef51f2fc895a9d9be'
+
+const accountSid='*************'
+const authToken='***********'
 const client = new twilio(accountSid, authToken);
 
 //database connectivity
-mongoose.connect('mongodb+srv://shobhitha_bhat:shobiacon2208@cluster0.uugyuwo.mongodb.net/MiniProject')
+mongoose.connect('mongodb+srv:*********')
 .then(()=>{
     console.log("Database Connected")
 })
@@ -53,7 +52,7 @@ let facultymessageSchema = new mongoose.Schema({
     facultyMail:{type:String},
     parentMail:{type:String},
     studentUsn:{type:String},
-    // phone:{type:Number},
+    
     subject:{type:String},
     msg:{type:String}
 },{timestamps:true})
@@ -91,7 +90,7 @@ let createFaculty = async function(req, res){
 }
 
 let createParent = async function(req, res){
-    let {pmail,ppassword,usn,pcontact} = req.body; //fetching request from postman body
+    let {pmail,ppassword,usn,pcontact} = req.body; 
     console.log("Received data: ",{pmail,ppassword,usn,pcontact})
     let result = await userModel2.create({pmail,ppassword,usn,pcontact});
     res.status(200).json({msg : "New Parent Registered", data : result})
@@ -107,10 +106,10 @@ let createParentMessage=async function(req,res){
     try {
         const message = await client.messages.create({
             body: `${subject}\n\n${msg}`,
-            // from: '+15079441641', // Twilio Number Shobhitha
-            from:'+12293185829',
-            // to: phone,  // Recipient Number
-            to:'+918197680621' //Shamitha
+           
+            from:'+*********',
+            
+            to:'*******' 
         });
         console.log('Message SID:', message.sid);
     } catch (err) {
@@ -125,31 +124,14 @@ let createFacultyMessage=async function(req,res){
     let result = await FacultyMsgModel.create({parentMail,facultyMail,studentUsn,subject,msg})
     console.log("Result",result)
     res.status(200).json({msg:"A new Message added to DB", data:result})
-    // try {
-    //     const message = await client.messages.create({
-    //         body: `${subject}\n\n${msg}`,
-    //         from: '+15079441641', // Twilio Number
-    //         to: phone,  // Recipient Number
-    //     });
-    //     console.log('Message SID:', message.sid);
-    // } catch (err) {
-    //     console.error('Error sending message:', err.message || err);
-    // }
-}
+   
 
 
-
-// let getFaculty = async function(req, res){
-//     let data = await userModel1.find({facultyid:req.body.facultyid})
-//     // res.status(200).json({msg : "All faculty Details", data : data})
-//     console.log(data)
-//     res.status(200).json(data)
-// }
 
 let loginFacultyData = async function(req, res){
     let {facultyid,fpassword}=req.body
     let data = await userModel1.find({facultyid, fpassword})
-    // res.status(200).json({msg : "All faculty Details", data : data})
+    
     console.log(data)
     res.status(200).json(data)
 }
@@ -205,9 +187,6 @@ let response = await ParentMsgModel.create({studentUsn,subject,msg:body,phone})
 console.log("Result",response)
 res.status(200).json({msg:"A new Message added to DB"})
 
-// if (typeof phone !== 'string' || phone.trim() === '') {
-//     return res.status(400).json({ error: "Invalid phone number" });
-// }
 phone = phone.toString();
 if (phone && !phone.startsWith('+')) {
     phone = '+' + phone;
@@ -216,10 +195,10 @@ if (phone && !phone.startsWith('+')) {
 try {
     const message = await client.messages.create({
         body: `${subject}\n\n${body}`,
-        // from: '+15079441641', // Twilio Number Shobhitha
-        from:'+12293185829',
-        // to: phone,  // Recipient Number
-        to:'+918197680621'  //Shamitha
+        
+        from:'********',
+        
+        to:'+*********'  
     });
     console.log('Message SID:', message.sid);
 } catch (err) {
